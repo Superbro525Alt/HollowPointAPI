@@ -41,18 +41,20 @@ app.post('/send_command', (req, res) => {
     if (command == "DAMAGE") {
         var damage = req.get("damage");
 
-        console.log(key, command, server, team, damage);
+
         if (key == null || command == null || server == null || team == null || damage == null) {
             res.status(400).send("Missing parameters");
             return;
         }
         var new_health = admin.database.ServerValue.increment(-damage);
         if (new_health <= 0) {
+            console.log("Player dead");
             playerRef.update({
                 health: 0,
                 dead: true
             })
         } else {
+            console.log("Player damaged");
             playerRef.update({
                 health: new_health
             });
