@@ -63,8 +63,9 @@ app.post('/send_command', (req, res) => {
                     health: new_health
                 });
             }
+            res.status(200).send("Success");
+            return;
         });
-        res.status(200).send("Damage done");
 
     }
 });
