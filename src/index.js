@@ -41,7 +41,7 @@ app.post('/send_command', (req, res) => {
     if (command == "DAMAGE") {
         var damage = req.get("damage");
 
-
+        var done = false;
         if (key == null || command == null || server == null || team == null || damage == null) {
             res.status(400).send("Missing parameters");
             return;
@@ -50,20 +50,24 @@ app.post('/send_command', (req, res) => {
         console.log(new_health);
 
         playerRef.child("health").on("value", function(snapshot) {
-            var health = parseInt(snapshot.val());
-            if (health <= 0) {
-                console.log("Player dead");
-                playerRef.update({
-                    health: 0,
-                    dead: true
-                })
-            } else {
-                console.log("Player damaged");
-                playerRef.update({
-                    health: new_health
-                });
+            if (!done) {
+                done = true;
+                var health = parseInt(snapshot.val());
+                if (health <= 0) {
+                    console.log("Player dead");
+                    playerRef.update({
+                        health: 0,
+                        dead: true
+                    })
+                } else {
+                    console.log("Player damaged");
+                    playerRef.update({
+                        health: new_health
+                    });
+                }
+
+                res.status(200).send("Success");
             }
-            res.status(200).send("Success");
             return;
         });
 
