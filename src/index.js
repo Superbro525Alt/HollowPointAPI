@@ -48,18 +48,22 @@ app.post('/send_command', (req, res) => {
         }
         var new_health = admin.database.ServerValue.increment(-damage);
         console.log(new_health);
-        if (parseInt(new_health.toString()) <= 0) {
-            console.log("Player dead");
-            playerRef.update({
-                health: 0,
-                dead: true
-            })
-        } else {
-            console.log("Player damaged");
-            playerRef.update({
-                health: new_health
-            });
-        }
+
+        playerRef.child("health").on("value", function(snapshot) {
+            var health = parseInt(snapshot.val());
+            if (health <= 0) {
+                console.log("Player dead");
+                playerRef.update({
+                    health: 0,
+                    dead: true
+                })
+            } else {
+                console.log("Player damaged");
+                playerRef.update({
+                    health: new_health
+                });
+            }
+        });
         res.status(200).send("Damage done");
 
     }
