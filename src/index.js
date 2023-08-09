@@ -47,7 +47,7 @@ app.post('/send_command', (req, res) => {
             return;
         }
         var new_health = admin.database.ServerValue.increment(-damage);
-        console.log("New health: " + parseInt(new_health.toString()));
+        console.log(new_health);
         if (parseInt(new_health.toString()) <= 0) {
             console.log("Player dead");
             playerRef.update({
