@@ -53,7 +53,7 @@ app.post('/send_command', (req, res) => {
             if (!done) {
                 done = true;
                 var health = parseInt(snapshot.val());
-                if (health <= 0) {
+                if (health <= 1) {
                     console.log("Player dead");
                     playerRef.update({
                         health: 0,
