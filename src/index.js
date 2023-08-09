@@ -36,11 +36,17 @@ app.post('/send_command', (req, res) => {
     var server = req.get("server");
     var team = req.get("team");
 
-    console.log(key, command, server, team);
 
     var playerRef = serversRef.child(server).child("players").child(team).child(key);
     if (command == "DAMAGE") {
         var damage = req.get("damage");
+
+        console.log(key, command, server, team, damage);
+        if (key == null || command == null || server == null || team == null || damage == null) {
+            res.status(400).send("Missing parameters");
+            return;
+        }
+
         playerRef.update({
             health: admin.database.ServerValue.increment(-damage)
         });
