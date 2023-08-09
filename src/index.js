@@ -46,11 +46,19 @@ app.post('/send_command', (req, res) => {
             res.status(400).send("Missing parameters");
             return;
         }
-
-        playerRef.update({
-            health: admin.database.ServerValue.increment(-damage)
-        });
+        var new_health = admin.database.ServerValue.increment(-damage);
+        if (new_health <= 0) {
+            playerRef.update({
+                health: 0,
+                dead: true
+            })
+        } else {
+            playerRef.update({
+                health: new_health
+            });
+        }
         res.status(200).send("Damage done");
+
     }
 });
 
