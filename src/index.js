@@ -42,14 +42,14 @@ app.post('/send_command', (req, res) => {
         var damage = req.get("damage");
 
         console.log(key, command, server, team, damage);
-        /*if (key == null || command == null || server == null || team == null || damage == null) {
+        if (key == null || command == null || server == null || team == null || damage == null) {
             res.status(400).send("Missing parameters");
             return;
         }
 
         playerRef.update({
             health: admin.database.ServerValue.increment(-damage)
-        }); */
+        });
         res.status(200).send("Damage done");
     }
 });
