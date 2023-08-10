@@ -29,6 +29,9 @@ app.get('/servers', (req, res) => {
       res.json(snapshot.val());
     });
 })
+app.get("/startup", (req, res) => {
+
+});
 
 app.post('/send_command', (req, res) => {
     var key = req.get("key");
@@ -47,12 +50,13 @@ app.post('/send_command', (req, res) => {
             return;
         }
         var new_health = admin.database.ServerValue.increment(-damage);
-        console.log(new_health);
+        //console.log(new_health);
 
         playerRef.child("health").on("value", function(snapshot) {
             if (!done) {
                 done = true;
                 var health = parseInt(snapshot.val());
+                console.log(health - damage);
                 if (health - damage <= 0) {
                     console.log("Player dead");
                     playerRef.update({
