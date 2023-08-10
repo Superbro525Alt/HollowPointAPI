@@ -74,7 +74,6 @@ app.post('/send_command', (req, res) => {
                 });
                 res.status(200).send("Success");
             }
-            return;
         });
 
     }
