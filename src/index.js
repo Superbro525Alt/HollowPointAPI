@@ -72,7 +72,7 @@ app.post('/send_command', (req, res) => {
                 res.json({
                     dead: health - damage <= 0
                 });
-                res.status(200).send("Success");
+                //res.status(200).send("Success");
             }
         });
 
