@@ -69,10 +69,12 @@ app.post('/send_command', (req, res) => {
                         health: new_health
                     });
                 }
-                res.json({
-                    dead: health - damage <= 0
-                });
-                //res.status(200).send("Success");
+               // res.json({
+                //    dead: health - damage <= 0
+                //});
+
+                res.setHeader("dead", (health - damage <= 0).toString());
+                res.status(200).send("Success");
             }
         });
 
