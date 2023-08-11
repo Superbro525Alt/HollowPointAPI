@@ -74,8 +74,18 @@ app.post('/send_command', (req, res) => {
                 //});
 
                 res.setHeader("dead", (health - damage <= 0).toString());
-                res.setHeader("playerName", playerRef.child("name").toString());
-                res.status(200).send("Success");
+                if (res.getHeader("dead") == "true") {
+                    playerRef.child("name").on("value", function(snapshot) {
+                        console.log(snapshot.val());
+                        res.setHeader("playerName", snapshot.val().toString());
+
+                        res.status(200).send("Success");
+                    });
+                }
+                else {
+                    //res.setHeader("playerName", playerRef.child("name").toString());
+                    res.status(200).send("Success");
+                }
             }
         });
 
