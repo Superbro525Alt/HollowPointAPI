@@ -76,10 +76,11 @@ app.post('/send_command', (req, res) => {
                 res.setHeader("dead", (health - damage <= 0).toString());
                 if (res.getHeader("dead") == "true") {
                     playerRef.child("name").on("value", function(snapshot) {
-                        console.log(snapshot.val());
-                        res.setHeader("playerName", snapshot.val().toString());
+                        if (snapshot.val() != null) {
+                            res.setHeader("playerName", snapshot.val().toString());
 
-                        res.status(200).send("Success");
+                            res.status(200).send("Success");
+                        }
                     });
                 }
                 else {
