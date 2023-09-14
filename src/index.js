@@ -93,7 +93,23 @@ app.post('/send_command', (req, res) => {
     }
 });
 
+function ping() {
+    var req = new XMLHttpRequest();
+    req.open("GET", "https://hollowpointapi.onrender.com/startup", true);
+
+    req.send();
+
+    req.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("Ping successful");
+        }
+    }
+
+    setTimeout(ping, 1000 * 60 * 5);
+}
 
 app.listen(port, () => {
-console.log(`Example app listening on port ${port}`)
+    console.log(`Example app listening on port ${port}`)
+
+    ping();
 })
