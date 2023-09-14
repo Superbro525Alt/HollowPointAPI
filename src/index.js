@@ -1,7 +1,6 @@
 var admin = require("firebase-admin");
 
-const fetch = require("node-fetch");
-
+var fetch = require("cross-fetch");
 
 var serviceAccount = require("../serviceAccountKey.json");
 
