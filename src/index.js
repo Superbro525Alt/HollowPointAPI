@@ -4,6 +4,12 @@ var fetch = require("cross-fetch");
 
 var serviceAccount = require("../serviceAccountKey.json");
 
+var https = require('https');
+
+var http = require('http');
+
+var fs = require('fs');
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://topdowncs-e9076-default-rtdb.firebaseio.com"
@@ -32,7 +38,8 @@ app.get('/servers', (req, res) => {
     });
 })
 app.get("/startup", (req, res) => {
-
+    res.status(200).send("200 - Good");
+    console.log("Ping");
 });
 
 app.post('/send_command', (req, res) => {
@@ -96,14 +103,26 @@ app.post('/send_command', (req, res) => {
 });
 
 function ping() {
-    fetch("https://hollowpointapi.onrender.com/startup").then((res) => {
-        console.log("Ping");
-        setTimeout(ping, 1000 * 60 * 5);
-    });
+    //fetch("https://hollowpointapi.onrender.com/startup").then((res) => {
+      //  console.log("Ping");
+      //  setTimeout(ping, 1000 * 60 * 5);
+    //});
 }
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+const run_on_https = false;
 
-    ping();
-})
+if (run_on_https) {
+	var options = {
+		key: fs.readFileSync('./keys/agent2-key.pem'),
+		cert: fs.readFileSync('./keys/agent2-cert.cert')
+	}
+
+	https.createServer(options, app).listen(port);
+	
+} else {
+	app.listen(port, () => {
+    	console.log(`Server listening on port ${port}`)
+
+    	//ping();
+	})
+}
